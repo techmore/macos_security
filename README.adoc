@@ -66,3 +66,28 @@ Refer to the link:CHANGELOG.adoc[CHANGELOG] for a complete list of changes.
 == NIST Disclaimer
 
 Any identification of commercial or open-source software in this document is done so purely in order to specify the methodology adequately. Such identification is not intended to imply recommendation or endorsement by the National Institute of Standards and Technology, nor is it intended to imply that the software identified are necessarily the best available for the purpose.
+
+
+== Instructions for testing
+
+mkdir psu_mscp
+cd psu_mscp
+git clone https://github.com/usnistgov/macos_security.git
+cd macos_security
+# Never work in main!
+git checkout ventura
+# create a virtual environment for Python
+python3 -m venv ~/psu_mscp/py3-mscp
+# where to source your python environment
+source ~/psu_mscp/py3-mscp/bin/activate
+# Install python dependencies 
+pip3 install -r requirements.txt
+# installs the gems locally so we don’t need admin rights
+bundle install --binstubs --path mscp_gems 
+
+# testing
+./scripts/generate_guidance.py baselines/cis_lvl1.yaml
+# create scripts, create profiles, create excel doc
+./scripts/generate_guidance.py baselines/cis_lvl2.yaml -s -p -x
+
+./scripts/generate_baseline.py -k cis_lvl1
